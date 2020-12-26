@@ -2,8 +2,8 @@
 //Keep database credentials in separate files
 
 
-define("", "");
-define("", "");
-define("", "");
-define("", "");
+define("DB_SERVER", "");
+define("DB_USER", "");
+define("DB_PASS", "");
+define("DB_NAME", "");
 ?>
