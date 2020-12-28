@@ -19,3 +19,8 @@
 
   </body>
 </html>
+
+
+<?php
+    $database->db_disconnect($database);
+?>
