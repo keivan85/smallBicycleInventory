@@ -79,7 +79,7 @@ class Bicycle
 
   public function create()
   {
-    $attributes = $this->atributes();
+    $attributes = $this->sanitized_attributes();
     $sql = "INSERT INTO bicycles (";
     $sql .= join(', ', array_keys($attributes));
     $sql .= ") VALUES ('";
@@ -95,7 +95,7 @@ class Bicycle
   }
 
   //Properties which has database columns exclude ID
-  public function atributes() {
+  public function attributes() {
     $attributes = [];
 
     foreach(self::$db_columns as $column) {
@@ -104,6 +104,16 @@ class Bicycle
     }
     
     return $attributes;
+  }
+
+  protected function sanitized_attributes() {
+    $sanitized = [];
+
+    foreach($this->attributes() as $key => $value) {
+      $sanitized[$key] = self::$database->escape_string($value);
+    }
+
+    return $sanitized;
   }
   // -- End of active record code --
 
