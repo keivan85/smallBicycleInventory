@@ -77,7 +77,7 @@ class Bicycle
     return $object;
   }
 
-  public function create()
+  protected function create()
   {
     $attributes = $this->sanitized_attributes();
     $sql = "INSERT INTO bicycles (";
@@ -94,22 +94,64 @@ class Bicycle
     return $result;
   }
 
+  protected function update()
+  {
+    $attributes = $this->sanitized_attributes();
+    $attribute_pairs = [];
+
+    foreach ($attributes as $key => $value) {
+      $attribute_pairs[] = "{$key}='{$value}'";
+    }
+
+    $sql = "UPDATE bicycles SET ";
+    $sql .= join(', ', $attribute_pairs);
+    $sql .= " WHERE id= '" . self::$database->escape_string($this->id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = self::$database->query($sql);
+
+    return $result;
+  }
+
+  public function save()
+  {
+    //A new record will not have an ID yet
+    if (isset($this->id)) {
+      return $this->update();
+    } else {
+      return $this->create();
+    }
+  }
+
+  public function merge_attributes($args = [])
+  {
+    foreach ($args as $key => $value) {
+      if (property_exists($this, $key) && !is_null($value)) {
+        //Dynamic $key not $this->key attribute
+        $this->$key = $value;
+      }
+    }
+  }
+
   //Properties which has database columns exclude ID
-  public function attributes() {
+  public function attributes()
+  {
     $attributes = [];
 
-    foreach(self::$db_columns as $column) {
-      if ($column == 'id') { continue;}
+    foreach (self::$db_columns as $column) {
+      if ($column == 'id') {
+        continue;
+      }
       $attributes[$column] = $this->$column;
     }
-    
+
     return $attributes;
   }
 
-  protected function sanitized_attributes() {
+  protected function sanitized_attributes()
+  {
     $sanitized = [];
 
-    foreach($this->attributes() as $key => $value) {
+    foreach ($this->attributes() as $key => $value) {
       $sanitized[$key] = self::$database->escape_string($value);
     }
 
