@@ -182,6 +182,16 @@ class Bicycle
 
     return $sanitized;
   }
+
+  public function delete() {
+    $sql= "DELETE FROM bicycles ";
+    $sql .= "WHERE id= '" . self::$database->escape_string($this->id) . "'";
+    $sql .= "LIMIT 1";
+
+    $result = self::$database->query($sql);
+
+    return $result;
+  }
   // -- End of active record code --
 
   public $id;
