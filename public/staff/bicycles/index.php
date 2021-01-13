@@ -8,7 +8,7 @@
 
 $current_page = $_GET['page'] ?? 1;
 
-$per_page = 3;
+$per_page = 2;
 
 $total_count = Bicycle::count_all();
 //Use pagination instead
@@ -64,6 +64,20 @@ $bicycles = Bicycle::find_by_sql($sql);
       <?php } ?>
     </table>
 
+<?php
+if ($pagination->total_pages() > 1) {
+  echo "<div class=\"pagination\">";
+
+  $url = url_for('staff/bicycles/index.php');
+
+  echo $pagination->previous_link($url);
+  echo " ";
+  echo $pagination->next_link($url);
+
+  echo "</div>";
+}
+
+?>
   </div>
 
 </div>
