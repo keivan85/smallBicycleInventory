@@ -1,12 +1,13 @@
 <?php
 
-class DatabaseObject {
-    static protected $database;
-    static protected $table_name = "";
-    static protected $columns = [];
-    public $errors = [];
+class DatabaseObject
+{
+  static protected $database;
+  static protected $table_name = "";
+  static protected $columns = [];
+  public $errors = [];
 
-    static function set_database($database)
+  static function set_database($database)
   {
     self::$database = $database;
   }
@@ -35,6 +36,16 @@ class DatabaseObject {
   {
     $sql = "SELECT * FROM " . static::$table_name;
     return static::find_by_sql($sql);
+  }
+
+
+  static public function count_all()
+  {
+    $sql = "SELECT COUNT(*) FROM " . static::$table_name;
+    $result_set = self::$database->query($sql);
+    $row = $result_set->fetch_array();
+
+    return array_shift($row);
   }
 
   static public function find_by_id($id)
@@ -66,7 +77,7 @@ class DatabaseObject {
   protected function validate()
   {
     $this->errors = [];
-    
+
     return $this->errors;
   }
 
@@ -77,7 +88,7 @@ class DatabaseObject {
       return false;
     }
     $attributes = $this->sanitized_attributes();
-    $sql = "INSERT INTO " . static::$table_name ." (";
+    $sql = "INSERT INTO " . static::$table_name . " (";
     $sql .= join(', ', array_keys($attributes));
     $sql .= ") VALUES ('";
     $sql .= join("', '", array_values($attributes));
@@ -105,7 +116,7 @@ class DatabaseObject {
       $attribute_pairs[] = "{$key}='{$value}'";
     }
 
-    $sql = "UPDATE " . static::$table_name. " SET ";
+    $sql = "UPDATE " . static::$table_name . " SET ";
     $sql .= join(', ', $attribute_pairs);
     $sql .= " WHERE id= '" . self::$database->escape_string($this->id) . "' ";
     $sql .= "LIMIT 1";
@@ -160,8 +171,9 @@ class DatabaseObject {
     return $sanitized;
   }
 
-  public function delete() {
-    $sql= "DELETE FROM " . static::$table_name . " ";
+  public function delete()
+  {
+    $sql = "DELETE FROM " . static::$table_name . " ";
     $sql .= "WHERE id= '" . self::$database->escape_string($this->id) . "'";
     $sql .= "LIMIT 1";
 
@@ -170,4 +182,3 @@ class DatabaseObject {
     return $result;
   }
 }
-?>
