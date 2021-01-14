@@ -64,20 +64,11 @@ $bicycles = Bicycle::find_by_sql($sql);
       <?php } ?>
     </table>
 
-<?php
-if ($pagination->total_pages() > 1) {
-  echo "<div class=\"pagination\">";
+    <?php
+    $url = url_for('staff/bicycles/index.php');
+    echo $pagination->page_links($url);
 
-  $url = url_for('staff/bicycles/index.php');
-
-  echo $pagination->previous_link($url);
-  echo " ";
-  echo $pagination->next_link($url);
-
-  echo "</div>";
-}
-
-?>
+    ?>
   </div>
 
 </div>
