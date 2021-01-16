@@ -7,6 +7,7 @@ html {
 }
 
 body {
+  position: relative;
   height: 100%;
   border: 0;
   font: 13px/15px Verdana, Arial, Helvetica, sans-serif;
@@ -14,33 +15,26 @@ body {
 }
 
 header {
-  width: 980px;
+  width: 100%;
   margin: 0 auto;
   padding: 0;
-  text-align: left;
-  color: #FFFFFF;
-}
-
-header h1 {
-  margin: 50px 0 0 0;
+  color: white;
   text-align: center;
+  background: #6e0b04;
 }
 
-header h1 a {
-  text-decoration: none;
-  color: #000;
-  letter-spacing: 0.4em;
+header a img {
+  max-width: 150px;
+  padding: 20px;
+}
+header h2 {
+  padding: 20px;
 }
 
-header h1 a img.bike-icon {
-  display: inline-block;
-  margin-bottom: 30px;
-  width: 75px;
-}
+
 
 #main {
-  width: 980px;
-  height: 500px;
+  width: 100%;
   margin: 0 auto;
   padding: 0;
 }
@@ -58,10 +52,11 @@ img#super-hero-image {
 }
 
 footer {
+  position: absolute;
+  bottom: 0;
   clear: both;
-  width: 980px;
-  margin: 0 auto;
-  padding: 10px;
+  width: 100%;
+  padding: 10px 0;
   background-color: #FFFFFF;
 }
 
@@ -114,9 +109,13 @@ img.inset {
   margin-right: 20px;
 }
 
+.table-container {
+  overflow-x: auto;
+}
+
 table#inventory {
   margin-top: 30px;
-  width: 980px;
+  width: 100%;
   border-collapse: collapse;
 }
 
