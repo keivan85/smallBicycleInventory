@@ -13,6 +13,7 @@
       <p>We will deliver it to your door and let you try it before you buy it.</p>
     </div>
 
+<div class="table-container">
     <table id="inventory">
       <tr>
         <th>Id</th>
@@ -27,9 +28,20 @@
       </tr>
 
 <?php
+$current_page = $_GET['page'] ?? 1;
 
-$parser = new ParseCSV(PRIVATE_PATH . '/used_bicycles.csv');
-$bikes = Bicycle::find_all();
+$show_per_page = 2;
+
+$total_count = Bicycle::count_all();
+
+$pagination = new Pagination($current_page, $show_per_page, $total_count);
+
+$sql = "SELECT * FROM bicycles ";
+$sql .= "LIMIT {$show_per_page} ";
+$sql .= "OFFSET {$pagination->offset()}";
+
+
+$bikes = Bicycle::find_by_sql($sql);
 
 ?>
       <?php foreach($bikes as $bike) { ?>
@@ -47,6 +59,12 @@ $bikes = Bicycle::find_all();
       <?php } ?>
 
     </table>
+</div>
+    <?php
+    $url = url_for('bicycles.php');
+    echo $pagination->page_links($url);
+
+    ?>
   </div>
 
 </div>
